@@ -1,6 +1,0 @@
-nl\hu\bep\gebruiker\core\application\GebruikerQueryHandler.class
-nl\hu\bep\gebruiker\GebruikerApplication.class
-nl\hu\bep\gebruiker\core\domain\Gebruiker.class
-nl\hu\bep\gebruiker\core\application\GebruikerCommandHandler.class
-nl\hu\bep\gebruiker\core\port\storage\AdresRepository.class
-nl\hu\bep\gebruiker\core\port\storage\GebruikerRepository.class
