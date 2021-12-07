@@ -31,7 +31,7 @@ public class GebruikerCommandHandler {
         return gebruiker;
     }
     public Gebruiker handle(AddKeyword command) {
-        Gebruiker gebruiker = this.getCandidateById(command.getId());
+        Gebruiker gebruiker = this.getGebruikerById(command.getId());
 
         gebruiker.addKeyword(command.getKeyword());
         this.adresGateway.findByKeywordsEquals(command.getKeyword()).forEach(gebruiker::setAdres);
@@ -43,7 +43,7 @@ public class GebruikerCommandHandler {
     }
 
     public Gebruiker handle(RemoveKeyword command) {
-        Gebruiker gebruiker = this.getCandidateById(command.getId());
+        Gebruiker gebruiker = this.getGebruikerById(command.getId());
 
         gebruiker.removeKeyword(command.getKeyword());
         this.publishEventsFor(gebruiker);
@@ -52,7 +52,7 @@ public class GebruikerCommandHandler {
         return gebruiker;
     }
 
-    private Gebruiker getCandidateById(UUID id) {
+    private Gebruiker getGebruikerById(UUID id) {
         return this.repository.findById(id)
                 .orElseThrow(() -> new GebruikerNotFound(id.toString()));
     }
