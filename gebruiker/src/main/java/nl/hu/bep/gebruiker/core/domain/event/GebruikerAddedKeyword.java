@@ -16,7 +16,7 @@ public class GebruikerAddedKeyword extends GebruikerEvent {
         return "keywords.gebruiker.added";
     }
 
-    public UUID getCandidate() {
+    public UUID getGebruiker() {
         return gebruiker;
     }
 
