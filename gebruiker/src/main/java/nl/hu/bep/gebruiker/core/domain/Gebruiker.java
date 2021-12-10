@@ -7,9 +7,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.HashedIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
-
+@Document
 public class Gebruiker {
     @Id
     private UUID id;
