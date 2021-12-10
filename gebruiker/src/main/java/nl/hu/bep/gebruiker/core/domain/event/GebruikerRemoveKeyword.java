@@ -13,10 +13,10 @@ public class GebruikerRemoveKeyword extends GebruikerEvent {
 
     @Override
     public String getEventKey() {
-        return "keywords.candidate.removed";
+        return "keywords.gebruiker.removed";
     }
 
-    public UUID getCandidate() {
+    public UUID getGebruiker() {
         return gebruiker;
     }
 
