@@ -10,10 +10,12 @@ import nl.hu.bep.gebruiker.core.domain.exception.GebruikerNotFound;
 import nl.hu.bep.gebruiker.core.port.messaging.GebruikerEventPublisher;
 import nl.hu.bep.gebruiker.core.port.storage.AdresRepository;
 import nl.hu.bep.gebruiker.core.port.storage.GebruikerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class GebruikerCommandHandler {
     private final GebruikerRepository repository;
     private final GebruikerEventPublisher eventPublisher;
