@@ -49,6 +49,11 @@ public class Gebruiker {
         this.events.add(new GebruikerRemoveKeyword(id, keyword));
     }
 
+    public void rename(String firstname, String lastname){
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
     public UUID getId() {
         return id;
     }

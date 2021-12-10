@@ -3,6 +3,7 @@ package nl.hu.bep.gebruiker.core.application;
 import nl.hu.bep.gebruiker.core.application.command.AddKeyword;
 import nl.hu.bep.gebruiker.core.application.command.RegisterGebruiker;
 import nl.hu.bep.gebruiker.core.application.command.RemoveKeyword;
+import nl.hu.bep.gebruiker.core.application.command.RenameGebruiker;
 import nl.hu.bep.gebruiker.core.domain.Gebruiker;
 import nl.hu.bep.gebruiker.core.domain.event.GebruikerEvent;
 import nl.hu.bep.gebruiker.core.domain.exception.GebruikerNotFound;
@@ -28,6 +29,16 @@ public class GebruikerCommandHandler {
         Gebruiker gebruiker = new Gebruiker(command.getFirstname(), command.getLastname(), command.getEmail(), command.getPassword());
         this.publishEventsFor(gebruiker);
         this.repository.save(gebruiker);
+        return gebruiker;
+    }
+
+    public Gebruiker handle(RenameGebruiker command){
+        Gebruiker gebruiker = this.getGebruikerById(command.getId());
+
+        gebruiker.rename(command.getFirstname(), command.getLastname());
+        this.publishEventsFor(gebruiker);
+        this.repository.save(gebruiker);
+
         return gebruiker;
     }
     public Gebruiker handle(AddKeyword command) {

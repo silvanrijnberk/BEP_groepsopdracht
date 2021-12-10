@@ -21,7 +21,7 @@ public class GebruikersController {
         this.commandHandler = commandHandler;
         this.queryHandler = queryHandler;
     }
-    
+
 
     @GetMapping("/{id}")
     public Gebruiker findGebruikerById(@PathVariable UUID id){
