@@ -21,7 +21,7 @@ public class Gebruiker {
     @Indexed(unique = true)
     private String email;
     @Indexed
-    private String adres;
+    private UUID adres;
     @Indexed
     char[]  password;
     @Indexed
@@ -67,7 +67,7 @@ public class Gebruiker {
         return email;
     }
 
-    public String getAdres() {
+    public UUID getAdres() {
         return adres;
     }
 
@@ -84,12 +84,13 @@ public class Gebruiker {
     }
 
     public void setAdres(UUID adres) {
-        this.adres = adres.toString();
+        this.adres = adres;
     }
 
     public void setPassword(char[] password) {
         this.password = password;
     }
+
     public void clearEvents() {
         this.events.clear();
     }

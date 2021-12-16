@@ -27,54 +27,58 @@ public class RabbitMqConfig {
     @Value("${spring.rabbitmq.port}")
     private int port;
 
-    @Value("${messaging.exchange.jobboard}")
-    private String jobBoardExchangeName;
+//    @Value("${messaging.exchange.jobboard}")
+//    private String jobBoardExchangeName;
 
-    @Value("${messaging.queue.candidate-keywords}")
-    private String candidateKeywordsQueueName;
-    @Value("${messaging.queue.job-keywords}")
-    private String jobKeywordsQueueName;
+    @Value("${messaging.queue.gebruiker-keywords}")
+    private String gebruikerKeywordsQueueName;
+
+//    @Value("${messaging.queue.job-keywords}")
+//    private String jobKeywordsQueueName;
+
     @Value("${messaging.queue.all-keywords}")
     private String allKeywordsQueueName;
 
-    @Value("${messaging.routing-key.candidate-keywords}")
-    private String candidatesKeywordsRoutingKey;
-    @Value("${messaging.routing-key.job-keywords}")
-    private String jobsKeywordsRoutingKey;
+    @Value("${messaging.routing-key.gebruiker-keywords}")
+    private String gebruikersKeywordsRoutingKey;
+
+//    @Value("${messaging.routing-key.job-keywords}")
+//    private String jobsKeywordsRoutingKey;
+
     @Value("${messaging.routing-key.all-keywords}")
     private String keywordsRoutingKey;
 
-    @Bean
-    public TopicExchange jobBoardExchange() {
-        return new TopicExchange(jobBoardExchangeName);
-    }
+//    @Bean
+//    public TopicExchange jobBoardExchange() {
+//        return new TopicExchange(jobBoardExchangeName);
+//    }
 
     @Bean
-    public Queue candidatesQueue() {
-        return QueueBuilder.durable(candidateKeywordsQueueName).build();
+    public Queue gebruikersQueue() {
+        return QueueBuilder.durable(gebruikerKeywordsQueueName).build();
     }
 
-    @Bean
-    public Binding candidatesKeywordsBinding() {
-        return BindingBuilder
-                .bind(candidatesQueue())
-                .to(jobBoardExchange())
-                .with(candidatesKeywordsRoutingKey);
-    }
+//    @Bean
+//    public Binding gebruikersKeywordsBinding() {
+//        return BindingBuilder
+//                .bind(gebruikersQueue())
+//                .to(jobBoardExchange())
+//                .with(gebruikersKeywordsRoutingKey);
+//    }
 
-    @Bean
-    public Queue jobsQueue() {
-        // Creates a new queue in RabbitMQ
-        return QueueBuilder.durable(jobKeywordsQueueName).build();
-    }
+//    @Bean
+//    public Queue jobsQueue() {
+//        // Creates a new queue in RabbitMQ
+//        return QueueBuilder.durable(jobKeywordsQueueName).build();
+//    }
 
-    @Bean
-    public Binding jobsKeywordsBinding() {
-        return BindingBuilder
-                .bind(jobsQueue())
-                .to(jobBoardExchange())
-                .with(jobsKeywordsRoutingKey);
-    }
+//    @Bean
+//    public Binding jobsKeywordsBinding() {
+//        return BindingBuilder
+//                .bind(jobsQueue())
+//                .to(jobBoardExchange())
+//                .with(jobsKeywordsRoutingKey);
+//    }
 
     @Bean
     public Queue keywordsQueue() {
@@ -82,18 +86,18 @@ public class RabbitMqConfig {
         return QueueBuilder.durable(allKeywordsQueueName).build();
     }
 
-    @Bean
-    public Binding keywordsBinding() {
-        return BindingBuilder
-                .bind(keywordsQueue())
-                .to(jobBoardExchange())
-                .with(keywordsRoutingKey);
-    }
+//    @Bean
+//    public Binding keywordsBinding() {
+//        return BindingBuilder
+//                .bind(keywordsQueue())
+//                .to(jobBoardExchange())
+//                .with(keywordsRoutingKey);
+//    }
 
-    @Bean
-    public RabbitMqEventPublisher EventPublisher(RabbitTemplate template) {
-        return new RabbitMqEventPublisher(template, jobBoardExchangeName);
-    }
+//    @Bean
+//    public RabbitMqEventPublisher EventPublisher(RabbitTemplate template) {
+//        return new RabbitMqEventPublisher(template, jobBoardExchangeName);
+//    }
 
     @Bean
     public RabbitTemplate rabbitTemplate(Jackson2JsonMessageConverter converter) {
