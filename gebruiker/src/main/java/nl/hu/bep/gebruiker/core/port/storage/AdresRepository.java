@@ -12,5 +12,6 @@ import java.util.UUID;
 public interface AdresRepository extends MongoRepository<Adres, UUID> {
     List<Adres> findByKeywordsEquals(String keyword, Sort sort);
 
+
     List<UUID> findByKeywordsEquals(String keyword);
 }
