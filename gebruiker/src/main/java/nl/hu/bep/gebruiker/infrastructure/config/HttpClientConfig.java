@@ -1,6 +1,5 @@
 package nl.hu.bep.gebruiker.infrastructure.config;
 
-import nl.hu.bep.gebruiker.infrastructure.driven.storage.HttpAdresRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +15,4 @@ public class HttpClientConfig {
         return new RestTemplate();
     }
 
-    @Bean
-    public HttpAdresRepository httpAdresRepository(){
-        return new HttpAdresRepository(rootPath, restTemplate());
-    }
 }
