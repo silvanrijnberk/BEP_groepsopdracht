@@ -7,8 +7,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class HttpClientConfig {
-    @Value("${http-client.root-path.job}")
-    private String rootPath;
+//    @Value("${http-client.root-path.job}")
+//    private String rootPath;
 
     @Bean
     public RestTemplate restTemplate() {

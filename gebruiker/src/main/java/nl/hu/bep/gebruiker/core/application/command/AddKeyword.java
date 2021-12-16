@@ -2,7 +2,8 @@ package nl.hu.bep.gebruiker.core.application.command;
 
 import java.util.UUID;
 
-public class AddKeyword {   private final UUID id;
+public class AddKeyword {
+    private final UUID id;
     private final String keyword;
 
     public AddKeyword(UUID id, String keyword) {

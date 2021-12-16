@@ -1,5 +1,6 @@
 package nl.hu.bep.gebruiker.core.application;
 
+import nl.hu.bep.gebruiker.core.application.query.FindGebruikerByKeyword;
 import nl.hu.bep.gebruiker.core.application.query.GetGebruikerById;
 import nl.hu.bep.gebruiker.core.application.query.ListGebruikers;
 import nl.hu.bep.gebruiker.core.domain.Gebruiker;
@@ -26,6 +27,11 @@ public class GebruikerQueryHandler {
     public List<Gebruiker> handle(ListGebruikers query) {
         Sort sort = createSort(query.getOrderBy(), query.getDirection());
         return this.repository.findAll(sort);
+    }
+
+    public List<Gebruiker> handle(FindGebruikerByKeyword query) {
+        Sort sort = createSort(query.getOrderBy(), query.getDirection());
+        return this.repository.findByKeywordsEquals(query.getKeyword(), sort);
     }
 
     private Sort createSort(String orderBy, String direction) {

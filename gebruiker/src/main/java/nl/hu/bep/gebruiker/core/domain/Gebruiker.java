@@ -16,7 +16,6 @@ public class Gebruiker {
     private UUID id;
     @Indexed
     private String firstname;
-    @Indexed
     private String lastname;
     @Indexed(unique = true)
     private String email;
