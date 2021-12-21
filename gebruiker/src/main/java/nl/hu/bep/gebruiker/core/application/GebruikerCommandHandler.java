@@ -18,12 +18,12 @@ import java.util.UUID;
 @Service
 public class GebruikerCommandHandler {
     private final GebruikerRepository repository;
-    private final GebruikerEventPublisher eventPublisher;
+    private final GebruikerEventPublisher gebruikerEventPublisher;
     private final AdresRepository adresGateway;
 
-    public GebruikerCommandHandler(GebruikerRepository repository, GebruikerEventPublisher eventPublisher, AdresRepository adresGateway) {
+    public GebruikerCommandHandler(GebruikerRepository repository, GebruikerEventPublisher gebruikerEventPublisher, AdresRepository adresGateway) {
         this.repository = repository;
-        this.eventPublisher = eventPublisher;
+        this.gebruikerEventPublisher = gebruikerEventPublisher;
         this.adresGateway = adresGateway;
     }
 
@@ -73,7 +73,7 @@ public class GebruikerCommandHandler {
 
     private void publishEventsFor(Gebruiker gebruiker) {
         List<GebruikerEvent> events = gebruiker.listEvents();
-        events.forEach(eventPublisher::publish);
+        events.forEach(gebruikerEventPublisher::publish);
         gebruiker.clearEvents();
     }
 }

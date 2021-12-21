@@ -1,23 +1,16 @@
-package nl.hu.bep.gebruiker.infrastructure.config;
+package nl.hu.bep.beoordeling.infrastructure.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.hu.bep.gebruiker.infrastructure.driven.messaging.RabbitMqEventPublisher;
-import org.springframework.amqp.core.*;
+import nl.hu.bep.beoordeling.infrastructure.driven.messaging.RabbitMqEventPublisher;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-
-/*
-    Values are configured in application.properties
-
-    Docs: https://docs.spring.io/spring-amqp/docs/current/reference/html/#reference
-    Concepts: https://www.rabbitmq.com/tutorials/amqp-concepts.html
- */
 
 @Configuration
 public class RabbitMqConfig {
@@ -30,8 +23,8 @@ public class RabbitMqConfig {
 //    @Value("${messaging.exchange.jobboard}")
 //    private String jobBoardExchangeName;
 
-    @Value("${messaging.queue.gebruiker-keywords}")
-    private String gebruikerKeywordsQueueName;
+    @Value("${messaging.queue.beoordeling-keywords}")
+    private String beoordelingKeywordsQueueName;
 
 //    @Value("${messaging.queue.job-keywords}")
 //    private String jobKeywordsQueueName;
@@ -39,8 +32,8 @@ public class RabbitMqConfig {
     @Value("${messaging.queue.all-keywords}")
     private String allKeywordsQueueName;
 
-    @Value("${messaging.routing-key.gebruiker-keywords}")
-    private String gebruikersKeywordsRoutingKey;
+    @Value("${messaging.routing-key.beoordeling-keywords}")
+    private String beoordelingKeywordsRoutingKey;
 
 //    @Value("${messaging.routing-key.job-keywords}")
 //    private String jobsKeywordsRoutingKey;
@@ -54,8 +47,8 @@ public class RabbitMqConfig {
 //    }
 
     @Bean
-    public Queue gebruikersQueue() {
-        return QueueBuilder.durable(gebruikerKeywordsQueueName).build();
+    public Queue beoordelingQueue() {
+        return QueueBuilder.durable(beoordelingKeywordsQueueName).build();
     }
 
 //    @Bean
@@ -102,7 +95,7 @@ public class RabbitMqConfig {
     @Bean
     public RabbitTemplate rabbitTemplate(Jackson2JsonMessageConverter converter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
-        rabbitTemplate.setConnectionFactory(connectionFactory());
+        rabbitTemplate.setConnectionFactory((org.springframework.amqp.rabbit.connection.ConnectionFactory) connectionFactory());
         rabbitTemplate.setMessageConverter(converter);
 
         return rabbitTemplate;
@@ -126,7 +119,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public ConnectionFactory connectionFactory() {
+    public CachingConnectionFactory connectionFactory() {
         return new CachingConnectionFactory(host, port);
     }
 }
