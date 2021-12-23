@@ -28,16 +28,25 @@ public class RabbitMqConfig {
     private int port;
 
     @Value("${messaging.exchange.gerecht}")
+    private String gerechtExchangeName;
+
+    @Value("${messaging.exchange.bestellingenboard}")
     private String bestellingenboardExchangeName;
 
     @Value("${messaging.queue.bestelling-keywords}")
     private String bestellingKeywordsQueueName;
+
+    @Value("${messaging.queue.bestelling}")
+    private String bestellingQueueName;
 
     @Value("${messaging.queue.gerecht-keywords}")
     private String gerechtenKeywordsQueueName;
 
     @Value("${messaging.queue.all-keywords}")
     private String allKeywordsQueueName;
+
+    @Value("${messaging.routing-key.bestelling}")
+    private String bestellingenRoutingKey;
 
     @Value("${messaging.routing-key.bestelling-keywords}")
     private String bestellingenKeywordsRoutingKey;
@@ -55,15 +64,28 @@ public class RabbitMqConfig {
 
     @Bean
     public Queue bestellingenQueue() {
+        return QueueBuilder.durable(bestellingQueueName).build();
+    }
+
+    @Bean
+    public Queue bestellingenKeywordsQueue() {
         return QueueBuilder.durable(bestellingKeywordsQueueName).build();
     }
 
     @Bean
     public Binding gebruikersKeywordsBinding() {
         return BindingBuilder
-                .bind(bestellingenQueue())
+                .bind(bestellingenKeywordsQueue())
                 .to(bestellingenboardExchange())
                 .with(bestellingenKeywordsRoutingKey);
+    }
+
+    @Bean
+    public Binding bestellingenBinding() {
+        return BindingBuilder
+                .bind(bestellingenQueue())
+                .to(bestellingenboardExchange())
+                .with(bestellingenRoutingKey);
     }
 
     @Bean
@@ -75,7 +97,7 @@ public class RabbitMqConfig {
     @Bean
     public Binding gerechtKeywordsBinding() {
         return BindingBuilder
-                .bind(bestellingenQueue())
+                .bind(bestellingenKeywordsQueue())
                 .to(bestellingenboardExchange())
                 .with(gerechtenKeywordsRoutingKey);
     }
@@ -96,7 +118,7 @@ public class RabbitMqConfig {
 
     @Bean
     public RabbitMqEventPublisher EventPublisher(RabbitTemplate template) {
-        return new RabbitMqEventPublisher(template, null);
+        return new RabbitMqEventPublisher(template, bestellingenboardExchangeName);
     }
 
     @Bean

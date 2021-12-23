@@ -23,7 +23,6 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 public class RabbitMqConfig {
     @Value("${spring.rabbitmq.host}")
     private String host;
-
     @Value("${spring.rabbitmq.port}")
     private int port;
 
@@ -32,14 +31,19 @@ public class RabbitMqConfig {
 
     @Value("${messaging.queue.gebruiker-keywords}")
     private String gebruikerKeywordsQueueName;
-
+    @Value("${messaging.queue.bestelling-keywords}")
+    private String bestellingKeywordsQueueName;
+    @Value("${messaging.queue.bestelling}")
+    private String bestellingQueueName;
     @Value("${messaging.queue.all-keywords}")
     private String allKeywordsQueueName;
 
     @Value("${messaging.routing-key.gebruiker-keywords}")
     private String gebruikersKeywordsRoutingKey;
-
-
+    @Value("${messaging.routing-key.bestelling-keywords}")
+    private String bestellingenKeywordsRoutingKey;
+    @Value("${messaging.routing-key.bestelling}")
+    private String bestellingenRoutingKey;
     @Value("${messaging.routing-key.all-keywords}")
     private String keywordsRoutingKey;
 
@@ -62,6 +66,34 @@ public class RabbitMqConfig {
     }
 
     @Bean
+    public Queue bestellingenKeywordsQueue() {
+        // Creates a new queue in RabbitMQ
+        return QueueBuilder.durable(bestellingKeywordsQueueName).build();
+    }
+
+    @Bean
+    public Binding bestellingenKeywordsBinding() {
+        return BindingBuilder
+                .bind(bestellingenKeywordsQueue())
+                .to(bestellingenboardExchange())
+                .with(bestellingenKeywordsRoutingKey);
+    }
+
+    @Bean
+    public Queue bestellingenQueue() {
+        // Creates a new queue in RabbitMQ
+        return QueueBuilder.durable(bestellingQueueName).build();
+    }
+
+    @Bean
+    public Binding bestellingenBinding() {
+        return BindingBuilder
+                .bind(bestellingenQueue())
+                .to(bestellingenboardExchange())
+                .with(bestellingenRoutingKey);
+    }
+
+    @Bean
     public Queue keywordsQueue() {
         // Creates a new queue in RabbitMQ
         return QueueBuilder.durable(allKeywordsQueueName).build();
@@ -77,7 +109,7 @@ public class RabbitMqConfig {
 
     @Bean
     public RabbitMqEventPublisher EventPublisher(RabbitTemplate template) {
-        return new RabbitMqEventPublisher(template, null);
+        return new RabbitMqEventPublisher(template, bestellingenboardExchangeName);
     }
 
     @Bean

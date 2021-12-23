@@ -8,5 +8,6 @@ public class BestellingKeywordEvent {
     public String eventKey;
     public Instant eventDate;
     public UUID bestelling;
+    public UUID gebruiker;
     public String keyword;
 }

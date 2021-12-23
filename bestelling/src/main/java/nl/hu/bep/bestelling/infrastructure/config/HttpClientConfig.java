@@ -8,11 +8,11 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class HttpClientConfig {
 
-    @Value("${http-client.root-path.bestelling}")
+    @Value("${http-client.root-path.gerecht}")
     private String rootPath;
 
     @Bean
-    public HttpGerechtRepository httpJobRepository() {
+    public HttpGerechtRepository HttpGerechtRepository() {
         return new HttpGerechtRepository(rootPath, restTemplate());
     }
 

@@ -7,6 +7,7 @@ import nl.hu.bep.gebruiker.core.domain.event.GebruikerEvent;
 import nl.hu.bep.gebruiker.core.domain.exception.GebruikerNotFound;
 import nl.hu.bep.gebruiker.core.port.messaging.GebruikerEventPublisher;
 import nl.hu.bep.gebruiker.core.port.storage.AdresRepository;
+import nl.hu.bep.gebruiker.core.port.storage.BestellingenRepository;
 import nl.hu.bep.gebruiker.core.port.storage.GebruikerRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,14 @@ public class GebruikerCommandHandler {
     private final GebruikerRepository repository;
     private final GebruikerEventPublisher gebruikerEventPublisher;
     private final AdresRepository adresRepository;
+    private final BestellingenRepository bestellingenGateway;
 
-    public GebruikerCommandHandler(GebruikerRepository repository, GebruikerEventPublisher gebruikerEventPublisher, AdresRepository adresRepository) {
+    public GebruikerCommandHandler(GebruikerRepository repository, GebruikerEventPublisher gebruikerEventPublisher, AdresRepository adresRepository, BestellingenRepository bestellingenGateway) {
         this.repository = repository;
         this.gebruikerEventPublisher = gebruikerEventPublisher;
         this.adresRepository = adresRepository;
+        this.bestellingenGateway  = bestellingenGateway;
+
     }
 
     public Gebruiker handle(RegisterGebruiker command) {
@@ -78,23 +82,11 @@ public class GebruikerCommandHandler {
         gebruiker.clearEvents();
     }
 
-    public void handle(MatchGebruikers command) {
-        // There's probably a faster way to do this using
-        // a custom query in the repository (or by using a relational DB)
-        this.repository.findByKeywordsEquals(command.getKeyword())
-                .forEach(gebruiker -> {
-                    gebruiker.addBestelling(command.getBestelling().toString());
-                    this.repository.save(gebruiker);
-                });
+    public void handle(AddBestelling command) {
+        Gebruiker gebruiker = this.getGebruikerById(command.getGebruiker());
+        gebruiker.addBestelling(command.getBestelling());
+        this.repository.save(gebruiker);
     }
 
-    public void handle(UnmatchGebruikers command) {
-        // There's probably a faster way to do this using
-        // a custom query in the repository (or by using a relational DB)
-        this.repository.findByKeywordsEquals(command.getKeyword())
-                .forEach(gebruiker -> {
-                    gebruiker.removeBestelling(command.getBestelling().toString());
-                    this.repository.save(gebruiker);
-                });
-    }
+
 }

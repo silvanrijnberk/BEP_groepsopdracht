@@ -20,12 +20,10 @@ public class Gebruiker {
     private String email;
     @Indexed
     private UUID adres;
-
     @Indexed
     private Set<String> keywords;
-
     @Indexed
-    private Set<String> bestelling;
+    private Set<String> bestellingen;
     @Transient
     private List<GebruikerEvent> events = new ArrayList<>();
 
@@ -35,8 +33,8 @@ public class Gebruiker {
         this.lastname = lastname;
         this.email = email;
         this.adres = adres;
+        this.bestellingen = new HashSet<>();
         this.keywords = new HashSet<>();
-        this.bestelling = new HashSet<>();
     }
 
     public void addKeyword(String keyword) {
@@ -44,15 +42,6 @@ public class Gebruiker {
         this.events.add(new GebruikerAddedKeyword(id, keyword));
     }
 
-    public void addBestelling(String bestelling) {
-        this.keywords.add(bestelling);
-        this.events.add(new GebruikerAddedKeyword(id, bestelling));
-    }
-
-    public void removeBestelling(String bestelling) {
-        this.keywords.remove(bestelling);
-        this.events.add(new GebruikerRemoveKeyword(id, bestelling));
-    }
 
     public void removeKeyword(String keyword) {
         this.keywords.remove(keyword);
@@ -68,6 +57,10 @@ public class Gebruiker {
         return id;
     }
 
+    public void addBestelling(UUID bestelling){
+        this.bestellingen.add(bestelling.toString());
+    }
+    
     public String getName() {
         return firstname + " " + lastname;
     }

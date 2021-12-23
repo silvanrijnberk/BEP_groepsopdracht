@@ -6,17 +6,17 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public class RabbitMqEventPublisher implements GebruikerEventPublisher {
     private final RabbitTemplate rabbitTemplate;
-    private final String jobBoardExchange;
+    private final String bestellingenboardExchange;
 
     public RabbitMqEventPublisher(
             RabbitTemplate rabbitTemplate,
-            String jobBoardExchange
+            String bestellingenboardExchange
     ) {
         this.rabbitTemplate = rabbitTemplate;
-        this.jobBoardExchange = jobBoardExchange;
+        this.bestellingenboardExchange = bestellingenboardExchange;
     }
 
     public void publish(GebruikerEvent event) {
-        this.rabbitTemplate.convertAndSend(jobBoardExchange, event.getEventKey(), event);
+        this.rabbitTemplate.convertAndSend(bestellingenboardExchange, event.getEventKey(), event);
     }
 }

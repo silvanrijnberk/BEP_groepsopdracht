@@ -1,6 +1,7 @@
 package nl.hu.bep.bestelling.core.domain;
 
 import nl.hu.bep.bestelling.core.domain.event.BestellingAddedKeyword;
+import nl.hu.bep.bestelling.core.domain.event.BestellingRegistered;
 import nl.hu.bep.bestelling.core.domain.event.BestellingEvent;
 import nl.hu.bep.bestelling.core.domain.event.BestellingRemoveKeyword;
 import org.springframework.data.annotation.Id;
@@ -36,6 +37,11 @@ public class Bestelling {
         this.opmerkingen = opmerkingen;
         this.gerechten = gerechten;
         this.keywords = new HashSet<>();
+        this.events.add(new BestellingRegistered(this.id, this.gebruiker));
+        for(BestellingEvent event : events){
+            System.out.println(event.getEventKey());
+        }
+
     }
 
     public void addKeyword(String keyword) {
