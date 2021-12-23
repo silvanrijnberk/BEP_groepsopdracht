@@ -3,16 +3,16 @@ package nl.hu.bep.gebruiker.core.application.command;
 import java.util.UUID;
 
 public class UnmatchGebruikers {
-    private final UUID bestelling;
+    private final UUID gebruikers;
     private final String keyword;
 
-    public UnmatchGebruikers(UUID bestelling, String keyword) {
-        this.bestelling = bestelling;
+    public UnmatchGebruikers(UUID gebruikers, String keyword) {
+        this.gebruikers = gebruikers;
         this.keyword = keyword;
     }
 
-    public UUID getBestelling() {
-        return bestelling;
+    public UUID getGebruikers() {
+        return gebruikers;
     }
 
     public String getKeyword() {

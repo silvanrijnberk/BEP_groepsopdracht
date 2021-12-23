@@ -83,7 +83,7 @@ public class GebruikerCommandHandler {
         // a custom query in the repository (or by using a relational DB)
         this.repository.findByKeywordsEquals(command.getKeyword())
                 .forEach(gebruiker -> {
-                    gebruiker.addBestelling(command.getBestelling().toString());
+                    gebruiker.addBestelling(command.getGebruikers().toString());
                     this.repository.save(gebruiker);
                 });
     }
@@ -93,7 +93,7 @@ public class GebruikerCommandHandler {
         // a custom query in the repository (or by using a relational DB)
         this.repository.findByKeywordsEquals(command.getKeyword())
                 .forEach(gebruiker -> {
-                    gebruiker.removeBestelling(command.getBestelling().toString());
+                    gebruiker.removeBestelling(command.getGebruikers().toString());
                     this.repository.save(gebruiker);
                 });
     }
