@@ -2,17 +2,21 @@ package nl.hu.bep.gebruiker.infrastructure.driver.web;
 
 import nl.hu.bep.gebruiker.core.application.GebruikerCommandHandler;
 import nl.hu.bep.gebruiker.core.application.GebruikerQueryHandler;
+import nl.hu.bep.gebruiker.core.application.command.AddKeyword;
 import nl.hu.bep.gebruiker.core.application.command.RegisterGebruiker;
+import nl.hu.bep.gebruiker.core.application.command.RemoveKeyword;
 import nl.hu.bep.gebruiker.core.application.query.GetAdresById;
 import nl.hu.bep.gebruiker.core.application.query.GetGebruikerById;
 import nl.hu.bep.gebruiker.core.application.query.ListGebruikers;
 import nl.hu.bep.gebruiker.core.domain.Adres;
 import nl.hu.bep.gebruiker.core.domain.Gebruiker;
+import nl.hu.bep.gebruiker.infrastructure.driver.web.request.KeywordRequest;
 import nl.hu.bep.gebruiker.infrastructure.driver.web.request.RegisterGebruikerRequest;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -40,6 +44,16 @@ public class GebruikersController {
     @GetMapping
     public List<Gebruiker> getAllGebruikers(){
         return this.queryHandler.handle(new ListGebruikers(null, null));
+    }
+
+    @PostMapping("/{id}/keyword")
+    public Gebruiker addKeyword(@PathVariable UUID id, @Valid @RequestBody KeywordRequest request) {
+        return this.commandHandler.handle(new AddKeyword(id, request.keyword));
+    }
+
+    @DeleteMapping("/{id}/keyword")
+    public Gebruiker removeKeyword(@PathVariable UUID id, @Valid @RequestBody KeywordRequest request) {
+        return this.commandHandler.handle(new RemoveKeyword(id, request.keyword));
     }
 
     @PostMapping("/register")

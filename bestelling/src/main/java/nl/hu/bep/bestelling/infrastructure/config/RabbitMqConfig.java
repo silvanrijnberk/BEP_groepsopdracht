@@ -28,7 +28,7 @@ public class RabbitMqConfig {
     private int port;
 
     @Value("${messaging.exchange.gerecht}")
-    private String gerechtExchangeName;
+    private String bestellingenboardExchangeName;
 
     @Value("${messaging.queue.bestelling-keywords}")
     private String bestellingKeywordsQueueName;
@@ -49,8 +49,8 @@ public class RabbitMqConfig {
     private String keywordsRoutingKey;
 
     @Bean
-    public TopicExchange gerechtExchange() {
-        return new TopicExchange(gerechtExchangeName);
+    public TopicExchange bestellingenboardExchange() {
+        return new TopicExchange(bestellingenboardExchangeName);
     }
 
     @Bean
@@ -62,7 +62,7 @@ public class RabbitMqConfig {
     public Binding gebruikersKeywordsBinding() {
         return BindingBuilder
                 .bind(bestellingenQueue())
-                .to(gerechtExchange())
+                .to(bestellingenboardExchange())
                 .with(bestellingenKeywordsRoutingKey);
     }
 
@@ -76,7 +76,7 @@ public class RabbitMqConfig {
     public Binding gerechtKeywordsBinding() {
         return BindingBuilder
                 .bind(bestellingenQueue())
-                .to(gerechtExchange())
+                .to(bestellingenboardExchange())
                 .with(gerechtenKeywordsRoutingKey);
     }
 
@@ -90,7 +90,7 @@ public class RabbitMqConfig {
     public Binding keywordsBinding() {
         return BindingBuilder
                 .bind(keywordsQueue())
-                .to(gerechtExchange())
+                .to(bestellingenboardExchange())
                 .with(keywordsRoutingKey);
     }
 

@@ -2,8 +2,7 @@ package nl.hu.bep.beoordeling.infrastructure.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.hu.bep.beoordeling.infrastructure.driven.messaging.RabbitMqEventPublisher;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -20,14 +19,11 @@ public class RabbitMqConfig {
     @Value("${spring.rabbitmq.port}")
     private int port;
 
-//    @Value("${messaging.exchange.jobboard}")
-//    private String jobBoardExchangeName;
+    @Value("${messaging.exchange.bestellingenboard}")
+    private String bestellingenboardExchangeName;
 
     @Value("${messaging.queue.beoordeling-keywords}")
     private String beoordelingKeywordsQueueName;
-
-//    @Value("${messaging.queue.job-keywords}")
-//    private String jobKeywordsQueueName;
 
     @Value("${messaging.queue.all-keywords}")
     private String allKeywordsQueueName;
@@ -35,43 +31,27 @@ public class RabbitMqConfig {
     @Value("${messaging.routing-key.beoordeling-keywords}")
     private String beoordelingKeywordsRoutingKey;
 
-//    @Value("${messaging.routing-key.job-keywords}")
-//    private String jobsKeywordsRoutingKey;
-
     @Value("${messaging.routing-key.all-keywords}")
     private String keywordsRoutingKey;
 
-//    @Bean
-//    public TopicExchange jobBoardExchange() {
-//        return new TopicExchange(jobBoardExchangeName);
-//    }
+    @Bean
+    public TopicExchange bestellingenboardExchange() {
+        return new TopicExchange(bestellingenboardExchangeName);
+    }
 
     @Bean
     public Queue beoordelingQueue() {
         return QueueBuilder.durable(beoordelingKeywordsQueueName).build();
     }
 
-//    @Bean
-//    public Binding gebruikersKeywordsBinding() {
-//        return BindingBuilder
-//                .bind(gebruikersQueue())
-//                .to(jobBoardExchange())
-//                .with(gebruikersKeywordsRoutingKey);
-//    }
+    @Bean
+    public Binding beoordelingKeywordsBinding() {
+        return BindingBuilder
+                .bind(beoordelingQueue())
+                .to(bestellingenboardExchange())
+                .with(beoordelingKeywordsRoutingKey);
+    }
 
-//    @Bean
-//    public Queue jobsQueue() {
-//        // Creates a new queue in RabbitMQ
-//        return QueueBuilder.durable(jobKeywordsQueueName).build();
-//    }
-
-//    @Bean
-//    public Binding jobsKeywordsBinding() {
-//        return BindingBuilder
-//                .bind(jobsQueue())
-//                .to(jobBoardExchange())
-//                .with(jobsKeywordsRoutingKey);
-//    }
 
     @Bean
     public Queue keywordsQueue() {
@@ -79,13 +59,13 @@ public class RabbitMqConfig {
         return QueueBuilder.durable(allKeywordsQueueName).build();
     }
 
-//    @Bean
-//    public Binding keywordsBinding() {
-//        return BindingBuilder
-//                .bind(keywordsQueue())
-//                .to(jobBoardExchange())
-//                .with(keywordsRoutingKey);
-//    }
+    @Bean
+    public Binding keywordsBinding() {
+        return BindingBuilder
+                .bind(keywordsQueue())
+                .to(bestellingenboardExchange())
+                .with(keywordsRoutingKey);
+    }
 
     @Bean
     public RabbitMqEventPublisher EventPublisher(RabbitTemplate template) {

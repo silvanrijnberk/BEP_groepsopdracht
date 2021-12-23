@@ -24,7 +24,22 @@ public class KeywordController {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Void> handleCandidateNotFound(KeywordNotFound exception) {
+    public ResponseEntity<Void> handleGebruikerNotFound(KeywordNotFound exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Void> handleBestellingNotFound(KeywordNotFound exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Void> handleGerechtNotFound(KeywordNotFound exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Void> handleBeoordelingNotFound(KeywordNotFound exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 

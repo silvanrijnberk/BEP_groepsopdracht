@@ -2,10 +2,13 @@ package nl.hu.bep.bestelling.infrastructure.driver.web;
 
 import nl.hu.bep.bestelling.core.application.BestellingCommandHandler;
 import nl.hu.bep.bestelling.core.application.BestellingQueryHandler;
+import nl.hu.bep.bestelling.core.application.command.AddKeyword;
 import nl.hu.bep.bestelling.core.application.command.RegisterBestelling;
+import nl.hu.bep.bestelling.core.application.command.RemoveKeyword;
 import nl.hu.bep.bestelling.core.application.query.GetBestellingById;
 import nl.hu.bep.bestelling.core.application.query.ListBestellingen;
 import nl.hu.bep.bestelling.core.domain.Bestelling;
+import nl.hu.bep.bestelling.infrastructure.driver.web.request.KeywordRequest;
 import nl.hu.bep.bestelling.infrastructure.driver.web.request.RegisterBestellingRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +35,16 @@ public class BestellingController {
     @GetMapping
     public List<Bestelling> getAllBestellingen(){
         return this.queryHandler.handle(new ListBestellingen(null, null));
+    }
+
+    @PostMapping("/{id}/keyword")
+    public Bestelling addKeyword(@PathVariable UUID id, @Valid @RequestBody KeywordRequest request) {
+        return this.commandHandler.handle(new AddKeyword(id, request.keyword));
+    }
+
+    @DeleteMapping("/{id}/keyword")
+    public Bestelling removeKeyword(@PathVariable UUID id, @Valid @RequestBody KeywordRequest request) {
+        return this.commandHandler.handle(new RemoveKeyword(id, request.keyword));
     }
 
     @PostMapping("/register")

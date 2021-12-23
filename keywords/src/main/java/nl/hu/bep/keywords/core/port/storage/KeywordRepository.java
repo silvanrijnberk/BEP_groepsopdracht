@@ -9,7 +9,13 @@ import java.util.Optional;
 public interface KeywordRepository extends MongoRepository<Keyword, String> {
     Optional<Keyword> findByKeyword(String keyword);
 
-    List<Keyword> findAllByCandidatesEquals(String candidateId);
+    List<Keyword> findAllByGebruikerEquals(String gebruikerId);
 
-    List<Keyword> findAllByJobsEquals(String jobId);
+    List<Keyword> findAllByBestellingEquals(String bestellingId);
+
+    List<Keyword> findAllByGerechtEquals(String gerechtId);
+
+    List<Keyword> findAllByBeoordelingEquals(String beoordelingId);
+
+
 }
