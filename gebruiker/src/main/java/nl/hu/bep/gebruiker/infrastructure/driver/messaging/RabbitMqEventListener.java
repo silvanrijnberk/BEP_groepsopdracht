@@ -21,6 +21,7 @@ public class RabbitMqEventListener {
             case "bestelling.registered":
                 this.commandHandler.handle(
                         new AddBestelling(event.bestelling, event.keyword, event.gebruiker)
+
                 );
                 break;
         }

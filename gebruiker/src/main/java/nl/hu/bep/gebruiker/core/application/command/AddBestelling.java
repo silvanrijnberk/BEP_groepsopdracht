@@ -12,12 +12,12 @@ public class AddBestelling {
         this.gebruiker = gebruiker;
     }
 
-    public UUID getGebruiker() {
-        return gebruiker;
-    }
-
     public UUID getBestelling() {
         return bestelling;
+    }
+
+    public UUID getGebruiker() {
+        return gebruiker;
     }
 
     public String getKeyword() {
