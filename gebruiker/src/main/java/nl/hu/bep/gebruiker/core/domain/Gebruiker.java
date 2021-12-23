@@ -21,22 +21,19 @@ public class Gebruiker {
     private String email;
     @Indexed
     private UUID adres;
-    @Indexed
-    char[]  password;
+
     @Indexed
     private Set<String> keywords;
     @Transient
     private List<GebruikerEvent> events = new ArrayList<>();
 
-    public Gebruiker(String firstname, String lastname, String email, char[] password) {
+    public Gebruiker(String firstname, String lastname, String email, UUID adres) {
         this.id = UUID.randomUUID();
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.adres = null;
-        this.password = password;
+        this.adres = adres;
         this.keywords = new HashSet<>();
-
     }
 
     public void addKeyword(String keyword) {
@@ -84,10 +81,6 @@ public class Gebruiker {
 
     public void setAdres(UUID adres) {
         this.adres = adres;
-    }
-
-    public void setPassword(char[] password) {
-        this.password = password;
     }
 
     public void clearEvents() {

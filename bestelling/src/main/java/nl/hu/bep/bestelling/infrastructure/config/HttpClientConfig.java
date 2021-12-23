@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class HttpClientConfig {
 
-    @Value("${http-client.root-path.gebruiker}")
+    @Value("${http-client.root-path.bestelling}")
     private String rootPath;
 
     @Bean

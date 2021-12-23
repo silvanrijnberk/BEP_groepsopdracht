@@ -1,10 +1,10 @@
-package nl.hu.bep.bestelling.core.application.query;
+package nl.hu.bep.gerecht.core.application.query;
 
-public class ListBestellings {
+public class ListGerechten {
     private final String orderBy;
     private final String direction;
 
-    public ListBestellings(String orderBy, String direction) {
+    public ListGerechten(String orderBy, String direction) {
         if (orderBy == null) {
             orderBy = "name";
         }

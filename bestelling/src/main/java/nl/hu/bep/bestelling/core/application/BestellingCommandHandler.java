@@ -17,42 +17,42 @@ import java.util.UUID;
 @Service
 public class BestellingCommandHandler {
     private final BestellingRepository repository;
-    private final BestellingEventPublisher gebruikerEventPublisher;
+    private final BestellingEventPublisher bestellingEventPublisher;
     private final GerechtRepository gerechtGateway;
 
-    public BestellingCommandHandler(BestellingRepository repository, BestellingEventPublisher gebruikerEventPublisher, GerechtRepository gerechtGateway) {
+    public BestellingCommandHandler(BestellingRepository repository, BestellingEventPublisher bestellingEventPublisher, GerechtRepository gerechtGateway) {
         this.repository = repository;
-        this.gebruikerEventPublisher = gebruikerEventPublisher;
+        this.bestellingEventPublisher = bestellingEventPublisher;
         this.gerechtGateway = gerechtGateway;
     }
 
     public Bestelling handle(RegisterBestelling command) {
-        Bestelling gebruiker = new Bestelling(command.getGebruiker(), command.getStatus(), command.getOpmerkingen(), command.getDate(), command.getGerechten());
-        this.publishEventsFor(gebruiker);
-        this.repository.save(gebruiker);
-        return gebruiker;
+        Bestelling bestelling = new Bestelling(command.getGebruiker(), command.getStatus(), command.getOpmerkingen(), command.getDate(), command.getGerechten());
+        this.publishEventsFor(bestelling);
+        this.repository.save(bestelling);
+        return bestelling;
     }
 
     public Bestelling handle(AddKeyword command) {
-        Bestelling gebruiker = this.getBestellingById(command.getId());
+        Bestelling bestelling = this.getBestellingById(command.getId());
 
-        gebruiker.addKeyword(command.getKeyword());
-        this.gerechtGateway.findByKeywordsEquals(command.getKeyword()).forEach(gebruiker::addGerecht);
+        bestelling.addKeyword(command.getKeyword());
+        this.gerechtGateway.findByKeywordsEquals(command.getKeyword()).forEach(bestelling::addGerecht);
 
-        this.publishEventsFor(gebruiker);
-        this.repository.save(gebruiker);
+        this.publishEventsFor(bestelling);
+        this.repository.save(bestelling);
 
-        return gebruiker;
+        return bestelling;
     }
 
     public Bestelling handle(RemoveKeyword command) {
-        Bestelling gebruiker = this.getBestellingById(command.getId());
+        Bestelling bestelling = this.getBestellingById(command.getId());
 
-        gebruiker.removeKeyword(command.getKeyword());
-        this.publishEventsFor(gebruiker);
-        this.repository.save(gebruiker);
+        bestelling.removeKeyword(command.getKeyword());
+        this.publishEventsFor(bestelling);
+        this.repository.save(bestelling);
 
-        return gebruiker;
+        return bestelling;
     }
 
     private Bestelling getBestellingById(UUID id) {
@@ -61,9 +61,9 @@ public class BestellingCommandHandler {
     }
 
 
-    private void publishEventsFor(Bestelling gebruiker) {
-        List<BestellingEvent> events = gebruiker.listEvents();
-        events.forEach(gebruikerEventPublisher::publish);
-        gebruiker.clearEvents();
+    private void publishEventsFor(Bestelling bestelling) {
+        List<BestellingEvent> events = bestelling.listEvents();
+        events.forEach(bestellingEventPublisher::publish);
+        bestelling.clearEvents();
     }
 }

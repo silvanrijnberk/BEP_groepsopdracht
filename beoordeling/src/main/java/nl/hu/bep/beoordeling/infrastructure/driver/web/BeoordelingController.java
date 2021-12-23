@@ -9,6 +9,7 @@ import nl.hu.bep.beoordeling.infrastructure.driver.web.request.RegisterBeoordeli
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.UUID;
 
 @RestController
@@ -28,9 +29,10 @@ public class BeoordelingController {
         return this.queryHandler.handle(new GetBeoordelingById(id));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public Beoordeling registerBeoordeling(@Valid @RequestBody RegisterBeoordelingRequest request){
-        return this.commandHandler.handle(new RegisterBeoordeling(request.id, request.gebruiker, request.sterren,  request.date, request.beschrijving));
+        Date date = new Date();
+        return this.commandHandler.handle(new RegisterBeoordeling(request.gebruiker, request.sterren, date, request.beschrijving));
     }
 
 

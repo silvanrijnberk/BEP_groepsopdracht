@@ -2,7 +2,7 @@ package nl.hu.bep.bestelling.core.application;
 
 import nl.hu.bep.bestelling.core.application.query.FindBestellingByKeyword;
 import nl.hu.bep.bestelling.core.application.query.GetBestellingById;
-import nl.hu.bep.bestelling.core.application.query.ListBestellings;
+import nl.hu.bep.bestelling.core.application.query.ListBestellingen;
 import nl.hu.bep.bestelling.core.domain.Bestelling;
 import nl.hu.bep.bestelling.core.domain.exception.BestellingNotFound;
 import nl.hu.bep.bestelling.core.port.storage.BestellingRepository;
@@ -24,7 +24,7 @@ public class BestellingQueryHandler {
                 .orElseThrow(() -> new BestellingNotFound(query.getId().toString()));
     }
 
-    public List<Bestelling> handle(ListBestellings query) {
+    public List<Bestelling> handle(ListBestellingen query) {
         Sort sort = createSort(query.getOrderBy(), query.getDirection());
         return this.repository.findAll(sort);
     }

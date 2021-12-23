@@ -40,7 +40,11 @@ public class Adres {
         this.province = province;
         this.keywords = new HashSet<>();
     }
-    
+
+    public UUID getId() {
+        return id;
+    }
+
     public void addKeyword(String keyword) {
         this.keywords.add(keyword);
         this.events.add(new GebruikerAddedKeyword(id, keyword));

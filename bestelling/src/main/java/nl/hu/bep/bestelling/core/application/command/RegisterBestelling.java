@@ -7,7 +7,6 @@ import java.util.Hashtable;
 import java.util.UUID;
 
 public class RegisterBestelling {
-    private final java.util.UUID id;
     private final java.util.UUID gebruiker;
     private final String opmerkingen;
     private final Date date;
@@ -15,16 +14,11 @@ public class RegisterBestelling {
     private final Hashtable<UUID, Integer> gerechten;
 
     public RegisterBestelling(UUID gebruiker, String status, String opmerkingen, Date date, Hashtable<UUID, Integer> gerechten) {
-        this.id = java.util.UUID.randomUUID();
         this.gebruiker = gebruiker;
         this.opmerkingen = opmerkingen;
         this.status = status;
         this.date = date;
         this.gerechten = gerechten;
-    }
-
-    public java.util.UUID getId() {
-        return id;
     }
 
     public java.util.UUID getGebruiker() {

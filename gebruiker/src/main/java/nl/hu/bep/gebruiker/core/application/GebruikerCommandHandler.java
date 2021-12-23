@@ -4,6 +4,7 @@ import nl.hu.bep.gebruiker.core.application.command.AddKeyword;
 import nl.hu.bep.gebruiker.core.application.command.RegisterGebruiker;
 import nl.hu.bep.gebruiker.core.application.command.RemoveKeyword;
 import nl.hu.bep.gebruiker.core.application.command.RenameGebruiker;
+import nl.hu.bep.gebruiker.core.domain.Adres;
 import nl.hu.bep.gebruiker.core.domain.Gebruiker;
 import nl.hu.bep.gebruiker.core.domain.event.GebruikerEvent;
 import nl.hu.bep.gebruiker.core.domain.exception.GebruikerNotFound;
@@ -19,16 +20,19 @@ import java.util.UUID;
 public class GebruikerCommandHandler {
     private final GebruikerRepository repository;
     private final GebruikerEventPublisher gebruikerEventPublisher;
-    private final AdresRepository adresGateway;
+    private final AdresRepository adresRepository;
 
-    public GebruikerCommandHandler(GebruikerRepository repository, GebruikerEventPublisher gebruikerEventPublisher, AdresRepository adresGateway) {
+    public GebruikerCommandHandler(GebruikerRepository repository, GebruikerEventPublisher gebruikerEventPublisher, AdresRepository adresRepository) {
         this.repository = repository;
         this.gebruikerEventPublisher = gebruikerEventPublisher;
-        this.adresGateway = adresGateway;
+        this.adresRepository = adresRepository;
     }
 
     public Gebruiker handle(RegisterGebruiker command) {
-        Gebruiker gebruiker = new Gebruiker(command.getFirstname(), command.getLastname(), command.getEmail(), command.getPassword());
+
+        Adres adres = new Adres(command.getStreetname(), command.getNumber(), command.getPostalcode(), command.getCity(), command.getProvince());
+        Gebruiker gebruiker = new Gebruiker(command.getFirstname(), command.getLastname(), command.getEmail(), adres.getId());
+        this.adresRepository.save(adres);
         this.publishEventsFor(gebruiker);
         this.repository.save(gebruiker);
         return gebruiker;
@@ -47,7 +51,7 @@ public class GebruikerCommandHandler {
         Gebruiker gebruiker = this.getGebruikerById(command.getId());
 
         gebruiker.addKeyword(command.getKeyword());
-        this.adresGateway.findByKeywordsEquals(command.getKeyword()).forEach(gebruiker::setAdres);
+        this.adresRepository.findByKeywordsEquals(command.getKeyword()).forEach(gebruiker::setAdres);
 
         this.publishEventsFor(gebruiker);
         this.repository.save(gebruiker);

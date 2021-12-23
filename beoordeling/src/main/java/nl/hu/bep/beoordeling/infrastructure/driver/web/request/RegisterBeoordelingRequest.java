@@ -2,22 +2,18 @@ package nl.hu.bep.beoordeling.infrastructure.driver.web.request;
 
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
 public class RegisterBeoordelingRequest {
-    @NotBlank
-    public UUID id;
-    @NotBlank
+    @NotNull
     public UUID gebruiker;
     @NotBlank
-    public String email;
-    @NotBlank
     public String beschrijving;
-    @NotBlank
+    @NotNull
     public float sterren;
-    @NotBlank
-    public Date date;
+
 
 
 }

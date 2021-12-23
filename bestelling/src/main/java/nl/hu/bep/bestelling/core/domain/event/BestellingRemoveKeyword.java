@@ -3,11 +3,11 @@ package nl.hu.bep.bestelling.core.domain.event;
 import java.util.UUID;
 
 public class BestellingRemoveKeyword extends BestellingEvent {
-    private final UUID gebruiker;
+    private final UUID bestelling;
     private final String keyword;
 
-    public BestellingRemoveKeyword(UUID gebruiker, String keyword) {
-        this.gebruiker = gebruiker;
+    public BestellingRemoveKeyword(UUID bestelling, String keyword) {
+        this.bestelling = bestelling;
         this.keyword = keyword;
     }
 
@@ -17,7 +17,7 @@ public class BestellingRemoveKeyword extends BestellingEvent {
     }
 
     public UUID getBestelling() {
-        return gebruiker;
+        return bestelling;
     }
 
     public String getKeyword() {

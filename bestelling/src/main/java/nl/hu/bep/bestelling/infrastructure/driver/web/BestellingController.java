@@ -4,18 +4,16 @@ import nl.hu.bep.bestelling.core.application.BestellingCommandHandler;
 import nl.hu.bep.bestelling.core.application.BestellingQueryHandler;
 import nl.hu.bep.bestelling.core.application.command.RegisterBestelling;
 import nl.hu.bep.bestelling.core.application.query.GetBestellingById;
+import nl.hu.bep.bestelling.core.application.query.ListBestellingen;
 import nl.hu.bep.bestelling.core.domain.Bestelling;
 import nl.hu.bep.bestelling.infrastructure.driver.web.request.RegisterBestellingRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
-@RequestMapping("/gebruikers")
+@RequestMapping("/bestellingen")
 public class BestellingController {
     private final BestellingCommandHandler commandHandler;
     private final BestellingQueryHandler queryHandler;
@@ -31,7 +29,12 @@ public class BestellingController {
         return this.queryHandler.handle(new GetBestellingById(id));
     }
 
-    @PostMapping
+    @GetMapping
+    public List<Bestelling> getAllBestellingen(){
+        return this.queryHandler.handle(new ListBestellingen(null, null));
+    }
+
+    @PostMapping("/register")
     public Bestelling registerBestelling(@Valid @RequestBody RegisterBestellingRequest request){
         String status =  "bezig";
         Date date  = new Date();
