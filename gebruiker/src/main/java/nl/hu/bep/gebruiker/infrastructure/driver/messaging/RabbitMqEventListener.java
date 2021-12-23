@@ -15,7 +15,7 @@ public class RabbitMqEventListener {
         this.commandHandler = commandHandler;
     }
 
-    @RabbitListener(queues = "#{'${messaging.queue.job-keywords}'}")
+    @RabbitListener(queues = "#{'${messaging.queue.bestellingen-keywords}'}")
     void listen(BestellingKeywordEvent event) {
         switch (event.eventKey) {
             case "keywords.bestelling.added":
