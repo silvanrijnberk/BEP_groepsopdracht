@@ -1,9 +1,6 @@
 package nl.hu.bep.gebruiker.core.application;
 
-import nl.hu.bep.gebruiker.core.application.command.AddKeyword;
-import nl.hu.bep.gebruiker.core.application.command.RegisterGebruiker;
-import nl.hu.bep.gebruiker.core.application.command.RemoveKeyword;
-import nl.hu.bep.gebruiker.core.application.command.RenameGebruiker;
+import nl.hu.bep.gebruiker.core.application.command.*;
 import nl.hu.bep.gebruiker.core.domain.Adres;
 import nl.hu.bep.gebruiker.core.domain.Gebruiker;
 import nl.hu.bep.gebruiker.core.domain.event.GebruikerEvent;
@@ -79,5 +76,25 @@ public class GebruikerCommandHandler {
         List<GebruikerEvent> events = gebruiker.listEvents();
         events.forEach(gebruikerEventPublisher::publish);
         gebruiker.clearEvents();
+    }
+
+    public void handle(MatchGebruikers command) {
+        // There's probably a faster way to do this using
+        // a custom query in the repository (or by using a relational DB)
+        this.repository.findByKeywordsEquals(command.getKeyword())
+                .forEach(gebruiker -> {
+                    gebruiker.addBestelling(command.getBestelling().toString());
+                    this.repository.save(gebruiker);
+                });
+    }
+
+    public void handle(UnmatchGebruikers command) {
+        // There's probably a faster way to do this using
+        // a custom query in the repository (or by using a relational DB)
+        this.repository.findByKeywordsEquals(command.getKeyword())
+                .forEach(gebruiker -> {
+                    gebruiker.removeBestelling(command.getBestelling().toString());
+                    this.repository.save(gebruiker);
+                });
     }
 }

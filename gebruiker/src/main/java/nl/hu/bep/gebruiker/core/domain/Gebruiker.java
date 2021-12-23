@@ -5,7 +5,6 @@ import nl.hu.bep.gebruiker.core.domain.event.GebruikerEvent;
 import nl.hu.bep.gebruiker.core.domain.event.GebruikerRemoveKeyword;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.HashedIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,6 +23,9 @@ public class Gebruiker {
 
     @Indexed
     private Set<String> keywords;
+
+    @Indexed
+    private Set<String> bestelling;
     @Transient
     private List<GebruikerEvent> events = new ArrayList<>();
 
@@ -34,11 +36,22 @@ public class Gebruiker {
         this.email = email;
         this.adres = adres;
         this.keywords = new HashSet<>();
+        this.bestelling = new HashSet<>();
     }
 
     public void addKeyword(String keyword) {
         this.keywords.add(keyword);
         this.events.add(new GebruikerAddedKeyword(id, keyword));
+    }
+
+    public void addBestelling(String bestelling) {
+        this.keywords.add(bestelling);
+        this.events.add(new GebruikerAddedKeyword(id, bestelling));
+    }
+
+    public void removeBestelling(String bestelling) {
+        this.keywords.remove(bestelling);
+        this.events.add(new GebruikerRemoveKeyword(id, bestelling));
     }
 
     public void removeKeyword(String keyword) {
