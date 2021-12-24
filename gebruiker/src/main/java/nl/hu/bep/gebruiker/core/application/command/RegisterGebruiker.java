@@ -1,11 +1,6 @@
 package nl.hu.bep.gebruiker.core.application.command;
 
 
-import nl.hu.bep.gebruiker.core.domain.Adres;
-import org.springframework.data.mongodb.core.index.Indexed;
-
-import java.util.UUID;
-
 public class RegisterGebruiker {
     private final String firstname;
     private final String lastname;

@@ -5,6 +5,7 @@ import nl.hu.bep.gerecht.core.application.GerechtQueryHandler;
 import nl.hu.bep.gerecht.core.application.command.AddKeyword;
 import nl.hu.bep.gerecht.core.application.command.RegisterGerecht;
 import nl.hu.bep.gerecht.core.application.command.RemoveKeyword;
+import nl.hu.bep.gerecht.core.application.query.FindGerechtByKeyword;
 import nl.hu.bep.gerecht.core.application.query.GetGerechtById;
 import nl.hu.bep.gerecht.core.application.query.ListGerechten;
 import nl.hu.bep.gerecht.core.domain.Gerecht;
@@ -53,6 +54,16 @@ public class GerechtController {
         return this.commandHandler.handle(new RegisterGerecht(request.naam, request.beschrijving,  request.ingredienten, request.prijs));
     }
 
+    @GetMapping(params = {"keyword"})
+    public List<Gerecht> FindGerechtByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(required = false) String orderBy,
+            @RequestParam(required = false) String direction
+    ) {
+        return this.queryHandler.handle(
+                new FindGerechtByKeyword(keyword, orderBy, direction)
+        );
+    }
 
 
 }

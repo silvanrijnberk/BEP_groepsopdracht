@@ -5,6 +5,7 @@ import nl.hu.bep.gebruiker.core.application.GebruikerQueryHandler;
 import nl.hu.bep.gebruiker.core.application.command.AddKeyword;
 import nl.hu.bep.gebruiker.core.application.command.RegisterGebruiker;
 import nl.hu.bep.gebruiker.core.application.command.RemoveKeyword;
+import nl.hu.bep.gebruiker.core.application.query.FindGebruikerByKeyword;
 import nl.hu.bep.gebruiker.core.application.query.GetAdresById;
 import nl.hu.bep.gebruiker.core.application.query.GetGebruikerById;
 import nl.hu.bep.gebruiker.core.application.query.ListGebruikers;
@@ -54,6 +55,17 @@ public class GebruikersController {
     @DeleteMapping("/{id}/keyword")
     public Gebruiker removeKeyword(@PathVariable UUID id, @Valid @RequestBody KeywordRequest request) {
         return this.commandHandler.handle(new RemoveKeyword(id, request.keyword));
+    }
+
+    @GetMapping(params = {"keyword"})
+    public List<Gebruiker> FindGebruikerByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(required = false) String orderBy,
+            @RequestParam(required = false) String direction
+    ) {
+        return this.queryHandler.handle(
+                new FindGebruikerByKeyword(keyword, orderBy, direction)
+        );
     }
 
     @PostMapping("/register")

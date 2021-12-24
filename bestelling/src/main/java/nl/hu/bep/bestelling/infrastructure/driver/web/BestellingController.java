@@ -5,6 +5,7 @@ import nl.hu.bep.bestelling.core.application.BestellingQueryHandler;
 import nl.hu.bep.bestelling.core.application.command.AddKeyword;
 import nl.hu.bep.bestelling.core.application.command.RegisterBestelling;
 import nl.hu.bep.bestelling.core.application.command.RemoveKeyword;
+import nl.hu.bep.bestelling.core.application.query.FindBestellingByKeyword;
 import nl.hu.bep.bestelling.core.application.query.GetBestellingById;
 import nl.hu.bep.bestelling.core.application.query.ListBestellingen;
 import nl.hu.bep.bestelling.core.domain.Bestelling;
@@ -45,6 +46,17 @@ public class BestellingController {
     @DeleteMapping("/{id}/keyword")
     public Bestelling removeKeyword(@PathVariable UUID id, @Valid @RequestBody KeywordRequest request) {
         return this.commandHandler.handle(new RemoveKeyword(id, request.keyword));
+    }
+
+    @GetMapping(params = {"keyword"})
+    public List<Bestelling> FindBestellingByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(required = false) String orderBy,
+            @RequestParam(required = false) String direction
+    ) {
+        return this.queryHandler.handle(
+                new FindBestellingByKeyword(keyword, orderBy, direction)
+        );
     }
 
     @PostMapping("/register")

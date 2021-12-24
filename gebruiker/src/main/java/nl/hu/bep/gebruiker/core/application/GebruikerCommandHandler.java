@@ -88,6 +88,4 @@ public class GebruikerCommandHandler {
         this.repository.save(gebruiker);
     }
 
-
-
 }
